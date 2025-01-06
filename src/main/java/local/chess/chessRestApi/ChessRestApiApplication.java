@@ -1,4 +1,4 @@
-package local.chess.chess_rest_api;
+package local.chess.chessRestApi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,8 +1,9 @@
-package local.chess.chess_rest_api.config;
+package local.chess.chessRestApi.config;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Configuration;
-import javax.annotation.PostConstruct;
+import io.github.cdimascio.dotenv.Dotenv;
+
+import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class EnvConfig {

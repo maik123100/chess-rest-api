@@ -1,7 +1,7 @@
-package local.chess.chess_rest_api.service;
+package local.chess.chessRestApi.service;
 
-import local.chess.chess_rest_api.model.Game;
-import local.chess.chess_rest_api.repository.GameRepository;
+import local.chess.chessRestApi.model.Game;
+import local.chess.chessRestApi.repository.GameRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

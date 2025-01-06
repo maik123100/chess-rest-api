@@ -61,4 +61,4 @@ This project is a RESTful API for managing chess games. It is built using Spring
 
 ## Intended Use
 
-This API is intended to be used with the service [Chess-Analysing-Pi](https://github.com/yourusername/chess-analysing-pi), which provides advanced analysis and insights for chess games.
+This API is intended to be used with the service [Chess-Analysing-Pi](https://github.com/maik123100/chess-analysing-pi), which provides advanced analysis and insights for chess games.

@@ -1,4 +1,4 @@
-package local.chess.chess_rest_api.controller;
+package local.chess.chessRestApi.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import local.chess.chess_rest_api.service.GameService;
-import local.chess.chess_rest_api.model.Game;
+import local.chess.chessRestApi.service.GameService;
+import local.chess.chessRestApi.model.Game;
 
 
 @RestController

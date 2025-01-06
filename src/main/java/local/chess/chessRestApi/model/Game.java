@@ -1,4 +1,4 @@
-package local.chess.chess_rest_api.model;
+package local.chess.chessRestApi.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

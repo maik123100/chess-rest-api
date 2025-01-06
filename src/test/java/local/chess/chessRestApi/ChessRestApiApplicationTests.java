@@ -1,4 +1,4 @@
-package local.chess.chess_rest_api;
+package local.chess.chessRestApi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
