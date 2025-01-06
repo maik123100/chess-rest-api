@@ -62,15 +62,3 @@ This project is a RESTful API for managing chess games. It is built using Spring
 ## Intended Use
 
 This API is intended to be used with the service [Chess-Analysing-Pi](https://github.com/yourusername/chess-analysing-pi), which provides advanced analysis and insights for chess games.
-
-## License
-
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
-## Contact
-
-For any inquiries, please contact [yourname](mailto:youremail@example.com).
