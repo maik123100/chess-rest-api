@@ -5,20 +5,20 @@ import local.chess.chessRestApi.repository.GameRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-
 @Service
 public class GameService {
-    private final GameRepository gameRepository;
 
-    public GameService(GameRepository gameRepository) {
-        this.gameRepository = gameRepository;
-    }
+	private final GameRepository gameRepository;
 
-    public List<Game> getAllGames() {
-        return gameRepository.findByOrderByDateDesc();
-    }
+	public GameService(GameRepository gameRepository) {
+		this.gameRepository = gameRepository;
+	}
 
-    public Game saveGame(Game game) {
-        return gameRepository.save(game);
-    }
+	public List<Game> getAllGames() {
+		return gameRepository.findAll();
+	}
+
+	public Game getGameById(String uuid) {
+		return gameRepository.findById(uuid).orElse(null);
+	}
 }
