@@ -2,24 +2,19 @@ package local.chess.chessRestApi.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Column;
 
-@IdClass(AnalysisId.class)
 @Entity
 @Table(name = "analysis")
 public class Analysis {
 
 	@Id
 	private String uuid;
-	@Id
-	private String playedMove;
-	private String bestLine;
-	private String score;
 
-	// Getters and setters
+	@Column(columnDefinition = "TEXT")
+	private String analysis; // JSON array of {played_move, best_line, score}
+
 	public String getUuid() {
 		return uuid;
 	}
@@ -28,27 +23,11 @@ public class Analysis {
 		this.uuid = uuid;
 	}
 
-	public String getPlayedMove() {
-		return playedMove;
+	public String getAnalysis() {
+		return analysis;
 	}
 
-	public void setPlayedMove(String playedMove) {
-		this.playedMove = playedMove;
-	}
-
-	public String getBestLine() {
-		return bestLine;
-	}
-
-	public void setBestLine(String bestLine) {
-		this.bestLine = bestLine;
-	}
-
-	public String getScore() {
-		return score;
-	}
-
-	public void setScore(String score) {
-		this.score = score;
+	public void setAnalysis(String analysis) {
+		this.analysis = analysis;
 	}
 }
