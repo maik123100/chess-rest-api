@@ -10,15 +10,14 @@ This project is a RESTful API for managing chess games. It is built using Spring
 
 ## Technologies Used
 
-- Java 23
+- Java 21
 - Spring Boot 3.4.1
 - PostgreSQL
 - Gradle
-- Dotenv for environment variable management
 
 ## Prerequisites
 
-- Java 23
+- Java 21
 - PostgreSQL
 - Gradle
 
@@ -56,8 +55,8 @@ This project is a RESTful API for managing chess games. It is built using Spring
 
 ## Endpoints
 
-- `GET /api/games` - Retrieve all chess games
-- `POST /api/games` - Create a new chess game
+- `GET /api/v1/games` - Retrieve all chess games
+- `POST /api/v1/games` - Create a new chess game
 
 ## Intended Use
 
