@@ -16,33 +16,32 @@ import org.springframework.web.bind.annotation.RestController;
 import local.chess.chessRestApi.service.GameService;
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/api/v1/games")
 public class GameController {
 
-	private final GameService gameService;
+  private final GameService gameService;
 
-	public GameController(GameService gameService) {
-		this.gameService = gameService;
-	}
+  public GameController(GameService gameService) {
+    this.gameService = gameService;
+  }
 
-	@GetMapping
-	public List<Game> getAllGames() {
-		return gameService.getAllGames();
-	}
+  @GetMapping
+  public List<Game> getAllGames() {
+    return gameService.getAllGames();
+  }
 
-	@GetMapping("/{uuid}")
-	public Game getGameById(@PathVariable String uuid) {
-		return gameService.getGameById(uuid);
-	}
+  @GetMapping("/{uuid}")
+  public Game getGameById(@PathVariable String uuid) {
+    return gameService.getGameById(uuid);
+  }
 
-	@GetMapping("/last/{n}")
-	public List<Game> getLastNGames(@PathVariable int n) {
-		return gameService.getLastNGames(n);
-	}
+  @GetMapping("/last/{n}")
+  public List<Game> getLastNGames(@PathVariable int n) {
+    return gameService.getLastNGames(n);
+  }
 
-	@GetMapping("/with-analysis/{uuid}")
-	public ResponseEntity<Map<Game, List<Analysis>>> getGameWithAnalysis(@PathVariable String uuid) {
-		Optional<Map<Game, List<Analysis>>> gameWithAnalysis = gameService.getGameAnalysisById(uuid);
-		return gameWithAnalysis.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-	}
+  @GetMapping("/with-analysis/{uuid}")
+  public Map<Game, Analysis> getGameWithAnalysis(@PathVariable String uuid) {
+    return gameService.getGameAnalysisById(uuid);
+  }
 }
