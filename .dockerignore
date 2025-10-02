@@ -1,0 +1,24 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+.gitmodules
+
+# IDE files  
+.idea
+.vscode
+.settings
+.project
+.classpath
+
+# Build artifacts (will be rebuilt in container)
+build/
+target/
+bin/
+.gradle/
+
+# Environment files (handled by docker-compose)
+.env*
+
+# Documentation that's not essential in production
+*.md
