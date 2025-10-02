@@ -1,0 +1,3 @@
+[submodule "scripts/Chess-Analysing-Pi"]
+	path = scripts/Chess-Analysing-Pi
+	url = git@github.com:maik123100/Chess-Analysing-Pi.git
