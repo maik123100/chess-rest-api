@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: chess
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chess
+    username: chess
+    password: chess
+  jpa:
+    hibernate:
+      ddl-auto: update
