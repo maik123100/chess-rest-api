@@ -10,9 +10,5 @@ spring:
       ddl-auto: update
 
 runner:
-  python-command: ${RUNNER_PYTHON_COMMAND:python3}
+  python-command: ${RUNNER_PYTHON_COMMAND:venv/bin/python3}
   working-directory: ${RUNNER_WORKING_DIRECTORY:.}
-  pull-games-script: ${RUNNER_PULL_GAMES_SCRIPT:pullGames.py}
-  analyzer-script: ${RUNNER_ANALYZER_SCRIPT:analyzer.py}
-  log-file: ${RUNNER_LOG_FILE:runner.log}
-  error-file: ${RUNNER_ERROR_FILE:runner.err}

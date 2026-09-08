@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,74 +13,47 @@ public class RunnerDispatchService {
 
     private final String pythonCommand;
     private final Path workingDirectory;
-    private final Path pullGamesScript;
-    private final Path analyzerScript;
-    private final Path logFile;
-    private final Path errorFile;
 
     public RunnerDispatchService(
-            @Value("${runner.python-command:python3}") String pythonCommand,
-            @Value("${runner.working-directory:.}") String workingDirectory,
-            @Value("${runner.pull-games-script:pullGames.py}") String pullGamesScript,
-            @Value("${runner.analyzer-script:analyzer.py}") String analyzerScript,
-            @Value("${runner.log-file:runner.log}") String logFile,
-            @Value("${runner.error-file:runner.err}") String errorFile) {
+            @Value("${runner.python-command:venv/bin/python3}") String pythonCommand,
+            @Value("${runner.working-directory:.}") String workingDirectory) {
         this.pythonCommand = pythonCommand;
         this.workingDirectory = Path.of(workingDirectory).toAbsolutePath().normalize();
-        this.pullGamesScript = resolve(workingDirectory, pullGamesScript);
-        this.analyzerScript = resolve(workingDirectory, analyzerScript);
-        this.logFile = resolve(workingDirectory, logFile);
-        this.errorFile = resolve(workingDirectory, errorFile);
     }
 
     public void dispatchGamePull() {
-        dispatch(List.of(pythonCommand, pullGamesScript.toString()));
+        dispatch("pullGames.py", "pullgames.log", "pullgames.err", List.of());
     }
 
     public void dispatchAnalysis() {
-        dispatch(List.of(pythonCommand, analyzerScript.toString()));
+        dispatch("analyzer.py", "analyzer.log", "analyzer.err", List.of());
     }
 
-    private void dispatch(List<String> command) {
-        try {
-            Files.createDirectories(workingDirectory);
-            createParentDirectory(logFile);
-            createParentDirectory(errorFile);
+    private void dispatch(String script, String logFile, String errorFile, List<String> args) {
+        List<String> command = new ArrayList<>();
+        command.add(pythonCommand);
+        command.add(workingDirectory.resolve(script).toString());
+        command.addAll(args);
 
+        Path logPath = workingDirectory.resolve(logFile);
+        Path errorPath = workingDirectory.resolve(errorFile);
+
+        try {
             ProcessBuilder processBuilder = new ProcessBuilder(command)
                     .directory(workingDirectory.toFile())
-                    .redirectOutput(ProcessBuilder.Redirect.appendTo(logFile.toFile()))
-                    .redirectError(ProcessBuilder.Redirect.appendTo(errorFile.toFile()));
+                    .redirectOutput(ProcessBuilder.Redirect.appendTo(logPath.toFile()))
+                    .redirectError(ProcessBuilder.Redirect.appendTo(errorPath.toFile()));
             processBuilder.start();
         } catch (IOException e) {
-            appendDispatchError(command, e);
+            try {
+                java.nio.file.Files.writeString(errorPath,
+                        "Failed to start " + String.join(" ", command) + ": " + e.getMessage()
+                                + System.lineSeparator(),
+                        java.nio.file.StandardOpenOption.CREATE,
+                        java.nio.file.StandardOpenOption.APPEND);
+            } catch (IOException ignored) {
+                // No process available to report the failure.
+            }
         }
-    }
-
-    private void appendDispatchError(List<String> command, IOException exception) {
-        try {
-            createParentDirectory(errorFile);
-            Files.writeString(errorFile,
-                    "Unable to dispatch " + String.join(" ", command) + ": "
-                            + exception.getMessage() + System.lineSeparator(),
-                    java.nio.file.StandardOpenOption.CREATE,
-                    java.nio.file.StandardOpenOption.APPEND);
-        } catch (IOException ignored) {
-            // There is no other process available to report a dispatch failure.
-        }
-    }
-
-    private void createParentDirectory(Path file) throws IOException {
-        Path parent = file.getParent();
-        if (parent != null) {
-            Files.createDirectories(parent);
-        }
-    }
-
-    private Path resolve(String baseDirectory, String configuredPath) {
-        Path path = Path.of(configuredPath);
-        return path.isAbsolute()
-                ? path.normalize()
-                : Path.of(baseDirectory).toAbsolutePath().normalize().resolve(path).normalize();
     }
 }
