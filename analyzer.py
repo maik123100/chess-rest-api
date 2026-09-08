@@ -2,19 +2,17 @@
 """
 analyzer.py - Stockfish analysis worker for chess-rest-api
 
-Listens for analysis_requested NOTIFY events, runs Stockfish on each move,
-and writes results directly to Postgres.
+Finds requested games, runs Stockfish on each move, and writes results
+directly to Postgres.
 
 Usage:
     python3 analyzer.py              # Analyze all unanalyzed requested games, then exit
-    python3 analyzer.py --listen     # Long-running NOTIFY listener
     python3 analyzer.py --game <id>  # Analyze a specific game by ID
 """
 
 import os
 import sys
 import json
-import select
 import chess
 import chess.engine
 import psycopg2
@@ -151,41 +149,10 @@ def analyze_pending():
         analyze_game(game_id)
 
 
-def listen_for_analysis():
-    print("Listening for analysis_requested notifications...")
-    conn = get_db_connection()
-    conn.autocommit = True
-    cur = conn.cursor()
-    cur.execute("LISTEN analysis_requested;")
-
-    try:
-        while True:
-            if select.select([conn], [], [], 5) == ([], [], []):
-                continue
-            conn.poll()
-            while conn.notifies:
-                notify = conn.notifies.pop(0)
-                try:
-                    payload = json.loads(notify.payload)
-                    game_id = payload.get("gameId")
-                    if game_id:
-                        print(f"Received analysis request for game {game_id}.")
-                        analyze_game(game_id)
-                except json.JSONDecodeError:
-                    print(f"Bad payload: {notify.payload}")
-    except KeyboardInterrupt:
-        print("\nShutting down.")
-    finally:
-        cur.close()
-        conn.close()
-
-
 def main():
     load_dotenv()
     load_config()
-    if "--listen" in sys.argv:
-        listen_for_analysis()
-    elif "--game" in sys.argv:
+    if "--game" in sys.argv:
         idx = sys.argv.index("--game")
         if idx + 1 < len(sys.argv):
             analyze_game(int(sys.argv[idx + 1]))

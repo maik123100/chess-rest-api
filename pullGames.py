@@ -7,7 +7,6 @@ managed by the Spring Boot REST API.
 
 Usage:
     python3 pullGames.py              # Single pull (up to last stored game)
-    python3 pullGames.py --listen     # Long-running NOTIFY listener
 """
 
 import os
@@ -237,33 +236,10 @@ def pull_up_to_last_game(username):
     )
 
 
-def listen_for_refreshes(username):
-    print(f"Listening for game_refresh notifications (user: {username})...")
-    conn = get_db_connection()
-    conn.autocommit = True
-    cursor = conn.cursor()
-    cursor.execute("LISTEN game_refresh;")
-    try:
-        while True:
-            conn.poll()
-            while conn.notifies:
-                notify = conn.notifies.pop(0)
-                print(f"Received refresh notification: {notify.payload}")
-                pull_up_to_last_game(username)
-    except KeyboardInterrupt:
-        print("\nShutting down listener.")
-    finally:
-        cursor.close()
-        conn.close()
-
-
 def main():
     load_dotenv()
     username = os.getenv("CHESS_USERNAME", "cs4d61696b")
-    if "--listen" in sys.argv:
-        listen_for_refreshes(username)
-    else:
-        pull_up_to_last_game(username)
+    pull_up_to_last_game(username)
 
 
 if __name__ == "__main__":

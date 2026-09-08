@@ -38,6 +38,7 @@ out/
 src/main/resources/application.properties
 .env
 venv/
+__pycache__/
 /stockfish
 /chess.sh
 /.logs/

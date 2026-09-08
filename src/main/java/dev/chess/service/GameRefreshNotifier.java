@@ -7,14 +7,14 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 public class GameRefreshNotifier {
 
-    private final PostgresNotifier notifier;
+    private final RunnerDispatchService runnerDispatchService;
 
-    public GameRefreshNotifier(PostgresNotifier notifier) {
-        this.notifier = notifier;
+    public GameRefreshNotifier(RunnerDispatchService runnerDispatchService) {
+        this.runnerDispatchService = runnerDispatchService;
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onRefreshRequested(GameRefreshRequestedEvent event) {
-        notifier.notify("game_refresh", "{}");
+        runnerDispatchService.dispatchGamePull();
     }
 }

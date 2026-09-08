@@ -7,14 +7,14 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 public class AnalysisRequestNotifier {
 
-    private final PostgresNotifier notifier;
+    private final RunnerDispatchService runnerDispatchService;
 
-    public AnalysisRequestNotifier(PostgresNotifier notifier) {
-        this.notifier = notifier;
+    public AnalysisRequestNotifier(RunnerDispatchService runnerDispatchService) {
+        this.runnerDispatchService = runnerDispatchService;
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onAnalysisRequested(AnalysisRequestedEvent event) {
-        notifier.notify("analysis_requested", "{\"gameId\":" + event.gameId() + "}");
+        runnerDispatchService.dispatchAnalysis();
     }
 }
